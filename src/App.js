@@ -20,7 +20,11 @@ function App({ store }) {
   }, [user, history, error]);
   return (
     <Switch>
-      <Route excat path="/login" component={LoginPage} />
+      <Route
+        excat
+        path="/login"
+        render={() => (user !== null ? <Redirect to="/home" /> : <LoginPage />)}
+      />
       <Route
         path="/home"
         render={() => (!user ? <Redirect to="/login" /> : <HomePage />)}

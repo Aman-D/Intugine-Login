@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme) => {
       flexDirection: "column",
       paddingLeft: theme.spacing(6),
       paddingRight: theme.spacing(6),
+      [theme.breakpoints.down("lg")]: {
+        paddingLeft: theme.spacing(8),
+        paddingRight: theme.spacing(8),
+      },
       [theme.breakpoints.down("sm")]: {
         paddingLeft: theme.spacing(6),
         paddingRight: theme.spacing(6),
