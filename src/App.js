@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
 
-function App() {
+import { connect } from "react-redux";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+
+function App({ store }) {
+  const { user, error } = store;
+  const [_, toggleRedirect] = useState();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (user && !error) {
+      history.push("/home");
+    } else {
+      toggleRedirect(false);
+    }
+  }, [user, history, error]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <Route excat path="/login" component={LoginPage} />
+      <Route
+        path="/home"
+        render={() => (!user ? <Redirect to="/login" /> : <HomePage />)}
+      />
+      <Route
+        path="/"
+        render={() =>
+          user === null ? <Redirect to="/login" /> : <Redirect to="/home" />
+        }
+      />
+    </Switch>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  store: state.login,
+});
+
+export default connect(mapStateToProps, null)(App);
